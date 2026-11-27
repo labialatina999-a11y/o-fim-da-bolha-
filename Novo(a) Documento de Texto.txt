@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>O fim da bolha</title>
+<meta name="description" content="Como o dinheiro das apostas inflou o futebol brasileiro e o que acontece agora que ele acabou.">
+<meta property="og:title" content="O fim da bolha">
+<meta property="og:description" content="Como o dinheiro das apostas inflou o futebol brasileiro e o que acontece agora que ele acabou.">
+<meta property="og:type" content="article">
+<meta property="og:image" content="imagens/campo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,800;1,6..72,400&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+:root{
+  --fundo:#f1ece0;
+  --papel:#faf7ef;
+  --texto:#242720;
+  --suave:#666a5e;
+  --verde:#4f6648;
+  --verde-escuro:#2f3d2b;
+  --terracota:#b4623b;
+  --areia:#e5c9a4;
+  --linha:#d8d0bf;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:4rem}
+body{
+  background:var(--fundo);
+  color:var(--texto);
+  font-family:'Newsreader',Georgia,serif;
+  font-size:1.14rem;
+  line-height:1.82;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- abertura ---------- */
+.topo{
+  position:relative;
+  min-height:92vh;
+  display:flex;
+  align-items:flex-end;
+  padding:clamp(2rem,7vw,6rem) clamp(1.25rem,7vw,6rem) clamp(2.5rem,6vw,5rem);
+  color:#fff;
+  overflow:hidden;
+  background:
+    linear-gradient(0deg,rgba(20,28,18,.86) 0%,rgba(20,28,18,.35) 45%,rgba(20,28,18,.08) 100%),
+    url("imagens/campo.jpg") center 60%/cover,
+    linear-gradient(160deg,#5b7a4c,#2f4a2a);
+}
+.topo-conteudo{position:relative;z-index:2;max-width:880px;margin-left:clamp(0rem,3vw,3rem)}
+.sobretitulo{
+  font:600 .74rem/1.4 'Work Sans',sans-serif;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--areia);
+  margin-bottom:1.1rem;
+}
+h1{
+  font-weight:800;
+  font-size:clamp(3.8rem,13vw,9.5rem);
+  line-height:.86;
+  letter-spacing:-.06em;
+}
+h1 em{font-style:italic;font-weight:400;color:var(--areia);margin-left:.18em}
+.linha-fina{
+  max-width:34rem;
+  margin:1.8rem 0 0 2.2rem;
+  font:400 1.05rem/1.6 'Work Sans',sans-serif;
+  color:#ece6d8;
+}
+
+/* bolhas de sabão sobre a foto */
+.bolha{
+  position:absolute;
+  z-index:3;
+  border-radius:50%;
+  cursor:pointer;
+  background:
+    radial-gradient(circle at 28% 24%,rgba(255,255,255,.9) 0 4%,transparent 14%),
+    radial-gradient(circle at 72% 78%,rgba(255,170,120,.28),transparent 42%),
+    radial-gradient(circle at 30% 72%,rgba(150,230,200,.26),transparent 48%),
+    radial-gradient(circle,transparent 58%,rgba(255,255,255,.4) 100%),
+    url("imagens/bola.jpg") center/cover;
+  box-shadow:inset 0 0 14px rgba(255,255,255,.4),0 8px 24px rgba(0,0,0,.18);
+  border:1px solid rgba(255,255,255,.45);
+  animation:sobe linear forwards,balanca ease-in-out infinite alternate;
+  bottom:-200px;
+}
+@keyframes sobe{to{bottom:105%}}
+@keyframes balanca{from{transform:translateX(-14px)}to{transform:translateX(14px)}}
+.anel{
+  position:absolute;z-index:3;pointer-events:none;border-radius:50%;
+  border:2px solid rgba(255,255,255,.85);
+  animation:anel .5s ease-out forwards;
+}
+@keyframes anel{from{transform:scale(.7);opacity:1}to{transform:scale(1.7);opacity:0}}
+.gota{
+  position:absolute;z-index:3;pointer-events:none;width:5px;height:5px;border-radius:50%;
+  background:rgba(255,255,255,.85);
+  transition:transform .6s ease-out,opacity .6s;
+}
+
+/* ---------- navegação ---------- */
+.navegacao{
+  position:sticky;top:0;z-index:10;
+  display:flex;gap:1.4rem;overflow-x:auto;
+  padding:.95rem max(1.25rem,calc((100vw - 1080px)/2));
+  background:rgba(250,247,239,.94);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--linha);
+  font:500 .84rem 'Work Sans',sans-serif;
+}
+.navegacao a{color:var(--verde);text-decoration:none;white-space:nowrap}
+.navegacao a:hover{color:var(--terracota)}
+
+/* ---------- corpo ---------- */
+main{width:min(100% - 2.5rem,1080px);margin:0 auto}
+
+.abertura{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);
+  gap:clamp(2rem,7vw,6rem);
+  padding:6rem 0 5rem;
+  border-bottom:1px solid var(--linha);
+}
+.abertura h2{
+  font-size:clamp(2.3rem,5vw,3.9rem);
+  line-height:1.04;
+  letter-spacing:-.04em;
+  position:sticky;top:5rem;align-self:start;
+}
+.abertura .texto{margin-left:0}
+
+.ato{padding:5rem 0;border-bottom:1px solid var(--linha)}
+.ato-intro{
+  display:grid;
+  grid-template-columns:110px minmax(0,1fr);
+  gap:1.5rem;
+  margin-bottom:2.8rem;
+}
+.ato:nth-of-type(even) .ato-intro{grid-template-columns:minmax(0,1fr) 110px;}
+.ato:nth-of-type(even) .numero-ato{order:2;text-align:right}
+.numero-ato{
+  padding-top:.7rem;
+  font:600 .78rem 'Work Sans',sans-serif;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--terracota);
+}
+.ato h2{
+  font-size:clamp(2.1rem,4.8vw,3.6rem);
+  line-height:1.05;
+  letter-spacing:-.04em;
+  max-width:14ch;
+}
+.ato:nth-of-type(even) h2{max-width:18ch}
+
+.texto{max-width:700px;margin-left:auto}
+.ato:nth-of-type(even) .texto{margin-left:clamp(0rem,8vw,7rem);margin-right:auto}
+.texto p{margin-bottom:1.35rem}
+.texto p:first-child::first-letter{
+  float:left;
+  font-weight:800;
+  font-size:4.2rem;
+  line-height:.82;
+  padding:.35rem .6rem 0 0;
+  color:var(--verde);
+}
+.abertura .texto p:first-child::first-letter{color:var(--terracota)}
+
+.chamada{
+  margin:2.4rem 0;
+  padding:.8rem 0 .8rem 1.6rem;
+  border-left:3px solid var(--terracota);
+  color:var(--verde-escuro);
+  font-size:1.5rem;
+  line-height:1.4;
+  font-style:italic;
+}
+
+figure.foto{margin:3rem 0 3rem -4vw;max-width:880px}
+figure.foto img{display:block;width:100%;max-height:520px;object-fit:cover;background:var(--linha)}
+figcaption{
+  margin-top:.6rem;
+  font:400 .8rem/1.5 'Work Sans',sans-serif;
+  color:var(--suave);
+}
+
+.grafico{
+  margin:3rem 0;
+  padding:1.6rem 1.6rem 1.2rem;
+  background:var(--papel);
+  border:1px solid var(--linha);
+}
+.grafico:nth-of-type(odd){margin-right:clamp(0rem,6vw,5rem)}
+.grafico h3{font-size:1.35rem;line-height:1.25;margin-bottom:.2rem}
+.grafico .sub{font:400 .85rem 'Work Sans',sans-serif;color:var(--suave);margin-bottom:1rem}
+.grafico small{
+  display:block;margin-top:.9rem;
+  font:400 .76rem/1.5 'Work Sans',sans-serif;color:var(--suave);
+}
+.fontes{
+  margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--linha);
+  font:400 .78rem/1.6 'Work Sans',sans-serif;color:var(--suave);
+}
+.fontes a{color:var(--verde)}
+
+footer{
+  padding:3rem 1.25rem 4rem;text-align:center;
+  font:400 .84rem 'Work Sans',sans-serif;color:var(--suave);
+}
+
+@media (max-width:760px){
+  body{font-size:1.06rem}
+  .topo{min-height:82vh;padding-bottom:2.5rem}
+  .linha-fina{margin-left:0}
+  .topo-conteudo{margin-left:0}
+  .abertura{grid-template-columns:1fr;gap:1.5rem;padding:3.5rem 0}
+  .abertura h2{position:static}
+  .ato{padding:3.5rem 0}
+  .ato-intro,.ato:nth-of-type(even) .ato-intro{grid-template-columns:1fr;gap:.4rem}
+  .ato:nth-of-type(even) .numero-ato{order:0;text-align:left}
+  .texto,.ato:nth-of-type(even) .texto{margin-left:0;margin-right:0}
+  figure.foto{margin-left:0}
+  .grafico:nth-of-type(odd){margin-right:0}
+  .chamada{font-size:1.25rem}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .bolha{animation:none;display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="topo" id="topo">
+  <div class="topo-conteudo">
+    <p class="sobretitulo">Reportagem especial &middot; Futebol e dinheiro</p>
+    <h1>O fim<br>da <em>bolha</em></h1>
+    <p class="linha-fina">As casas de apostas mudaram o tamanho do futebol brasileiro. Esta reportagem segue o dinheiro que inflou salários, camisas e contratações, e a conta que ficou.</p>
+  </div>
+</header>
+
+<nav class="navegacao" aria-label="Navegação da reportagem">
+  <a href="#prologo">Prólogo</a>
+  <a href="#ato1">Ato 1 &middot; Salários</a>
+  <a href="#ato2">Ato 2 &middot; Camisas e taças</a>
+  <a href="#ato3">Ato 3 &middot; América do Sul</a>
+  <a href="#ato4">Ato 4 &middot; A conta</a>
+</nav>
+
+<main>
+
+<!-- ================= PRÓLOGO ================= -->
+<section class="abertura" id="prologo">
+  <h2>Prólogo</h2>
+  <div class="texto">
+    <p>Na noite de 17 de setembro, os perfis oficiais de Flamengo, Palmeiras, Corinthians, São Paulo, Vasco, Grêmio, Internacional e de quase todos os outros clubes da Série A publicaram o mesmo texto. As federações de São Paulo e do Rio de Janeiro fizeram o mesmo. O título era "O fim do futebol brasileiro".</p>
+    <p>O manifesto reagia a uma ideia que circulava em Brasília: proibir as apostas no país. Os clubes defendiam seus patrocinadores, mas também admitiam o tamanho da dependência. Segundo o texto, "o investimento das empresas de apostas autorizadas tornou-se uma das principais fontes de receita do esporte".</p>
+    <p>É uma confissão e tanto para um esporte que existe no Brasil há mais de um século e que passou pela hiperinflação, por várias trocas de moeda e pela saída de patrocinadores importantes sem acabar. As casas de apostas chegaram às camisas há menos de dez anos.</p>
+    <p>Elas entraram pela porta aberta em dezembro de 2018, quando o governo Michel Temer, em suas últimas semanas, sancionou a Lei 13.756. A lei legalizou as apostas esportivas, mas as regras de fiscalização só viriam anos depois. Nesse intervalo, as empresas, a maioria com sede no exterior, escolheram o futebol como vitrine.</p>
+    <p>O dinheiro mudou o tamanho do futebol brasileiro. Os salários do topo, que tinham passado uma década parados em termos reais, dispararam. A folha dos 20 clubes mais ricos do país já supera a de ligas como a portuguesa e a holandesa. Campeonatos ganharam nome de casa de apostas. E os clubes brasileiros abriram uma distância inédita sobre os rivais sul-americanos.</p>
+    <p>Oito dias depois do manifesto, o governo publicou uma medida provisória que foi além do que se especulava: proibiu todas as apostas de quota fixa no país. Os clubes perderam, de uma vez, o setor que mais pagava por suas camisas. Esta reportagem mostra para onde foi esse dinheiro, começando pelos salários.</p>
+  </div>
+</section>
+
+<!-- ================= ATO 1 ================= -->
+<section class="ato" id="ato1">
+  <div class="ato-intro">
+    <span class="numero-ato">Ato 1</span>
+    <h2>A anomalia salarial e o salto fora da curva</h2>
+  </div>
+  <div class="texto">
+    <p>Em agosto de 2006, o Santos venceu o São Paulo na disputa pelo meia Zé Roberto com um argumento simples: dobrou a oferta do rival. Os R$250 mil propostos pelo clube do Morumbi viraram cerca de R$500 mil na Vila Belmiro, segundo a Gazeta do Povo. Era o topo do mercado nacional, e já parecia excessivo. Dois meses depois, a Folha de S.Paulo mostrava que os salários sufocavam as contas dos quatro grandes paulistas: o Corinthians gastava R$6 milhões por mês com o futebol e arrecadava metade disso. "Esse mercado de futebol não é compatível com a realidade do país", dizia à Folha o então presidente do São Paulo, Juvenal Juvêncio.</p>
+    <p>Dez anos depois, o teto havia subido no papel. Em 2016, segundo levantamento do jornalista Jorge Nicola, o maior salário do país era o do atacante Paolo Guerrero, do Flamengo, com R$900 mil por mês, seguido por Fred, do Atlético-MG, com R$800 mil. Mas o salto era ilusório. Corrigidos pelo IPCA acumulado entre 2007 e 2016, de 82,6%, os R$500 mil de Zé Roberto equivaleriam a cerca de R$913 mil. Em termos reais, o topo da pirâmide salarial brasileira passou uma década inteira parado: Guerrero ganhava, em poder de compra, praticamente o mesmo que Zé Roberto.</p>
+    <p>Na década seguinte, a curva abandonou qualquer parâmetro histórico. A inflação acumulada de 2017 a setembro de 2026 foi de 61,1%. Se o futebol tivesse apenas acompanhado o custo de vida, o salário de Guerrero corresponderia hoje a cerca de R$1,45 milhão. A realidade é outra: Neymar recebe R$4,14 milhões mensais no Santos, segundo levantamento do ge publicado em outubro. É um crescimento de 185% acima da inflação, quase o triplo do teto de 2016.</p>
+    <p>Não se trata de uma exceção provocada por um único astro. Em 2016, o sétimo maior salário do país era de R$600 mil, o equivalente a cerca de R$970 mil hoje. Em 2026, o sétimo da lista recebe cerca de R$2 milhões, mais que o dobro em termos reais. Só no Flamengo, Arrascaeta e Jorginho ganham na casa dos R$3 milhões, e Saúl, Lucas Paquetá e Samuel Lino, cerca de R$2 milhões cada. O valor que em 2016 garantia o segundo maior contracheque do Brasil hoje é patamar de titular comum: o atacante Pedro, um dos principais nomes do elenco rubro-negro, aparece no levantamento do ge com salário inferior a R$ 1 milhão.</p>
+    <p>O efeito se espalhou pelas folhas inteiras. Segundo o ge, o Flamengo gasta R$37,5 milhões por mês com salários, e Palmeiras, Corinthians e Cruzeiro, cerca de R$30 milhões cada. Os R$6 milhões que levaram o Corinthians à crise em 2006 equivaleriam hoje a cerca de R$17,7 milhões, pouco mais da metade da folha atual do clube. No conjunto, os gastos salariais dos 20 clubes mais ricos do país passaram de R$4,1 bilhões em 2023 para R$6,3 bilhões em 2025, alta nominal de mais de 50% em dois anos, segundo a consultoria Sports Value.</p>
+    <p>Ou seja, o salto dos últimos anos não foi correção da inflação. O topo do futebol brasileiro passou dez anos parado em termos reais e, em pouco tempo, passou a pagar quase o triplo. A virada coincide com a chegada das casas de apostas, que começaram pelas camisas dos clubes e terminaram dando nome aos próprios campeonatos.</p>
+    <p>Para o economista Rodolfo Coelho Prates, doutor em Economia Aplicada e professor do curso de Ciências Econômicas da Pontifícia Universidade Católica do Paraná (PUCPR), o crescimento "reflete, sobretudo, a maior disponibilidade de recursos financeiros, a competição por talentos escassos e a valorização econômica dos resultados esportivos". Ele faz uma ressalva: a comparação considera o maior salário, e não a média, e "o comportamento das remunerações dos grandes nomes do futebol não representa necessariamente o conjunto dos profissionais do futebol brasileiro". Para Prates, também "não seria correto atribuir todo esse crescimento às empresas de apostas. Elas certamente contribuíram para a expansão dos patrocínios, especialmente nos últimos anos, mas o futebol brasileiro passou por transformações mais amplas".</p>
+  </div>
+</section>
+
+<!-- ================= ATO 2 ================= -->
+<section class="ato" id="ato2">
+  <div class="ato-intro">
+    <span class="numero-ato">Ato 2</span>
+    <h2>O circuito fechado das camisas e das taças</h2>
+  </div>
+  <div class="texto">
+    <p>Enquanto a regulamentação não saía, as casas de apostas investiram no futebol para tornar suas marcas conhecidas e conquistar clientes.</p>
+    <p>A mudança na paisagem visual do esporte foi avassaladora. Até meados da década passada, o espaço mais nobre dos uniformes pertencia a bancos, montadoras e empresas de varejo. A Caixa Econômica Federal, maior patrocinadora do futebol nacional na época, pagava R$30 milhões por ano ao Corinthians, entre 2012 e 2016, e R$25 milhões ao Flamengo, no auge do contrato, segundo a Exame. A exceção era a Crefisa, que chegou a pagar R$81 milhões anuais ao Palmeiras.</p>
+    <p>Com a chegada das bets, essa tabela virou poeira. Em 2025, o Flamengo trocou de casa de apostas e passou a estampar a Betano por R$268,5 milhões anuais, segundo apuração do Estadão. Logo abaixo vinham São Paulo (Superbet, R$113 milhões), Corinthians (Esportes da Sorte, R$103 milhões) e Palmeiras (Sportingbet, R$100 milhões). Corrigido pela inflação, o patrocínio que a Caixa pagava ao Flamengo equivaleria a cerca de R$39 milhões hoje: o valor atual é quase sete vezes maior em termos reais. Empresas de outros setores simplesmente não tinham margem para competir. O Brasileirão de 2026 começou com 12 dos 20 clubes da Série A exibindo uma casa de apostas como patrocinadora máster.</p>
+    <p>O efeito aparece nos balanços. Segundo a consultoria Sports Value, as receitas de marketing dos 20 clubes mais ricos do país passaram de R$1,4 bilhão em 2023 para R$3,2 bilhões em 2025. O estudo atribui a alta, em boa parte, ao pagamento inflacionado das bets, que pagam bem mais que outros setores.</p>
+    <p>Para Prates, o problema não está no crescimento dos salários em si, "mas na relação entre esse crescimento e a capacidade de geração recorrente de receitas". "O aumento salarial é economicamente sustentável quando é acompanhado por um crescimento consistente das receitas operacionais, e não apenas por ingressos extraordinários de recursos", afirma. Segundo ele, as bets "se mostraram uma fonte de receita muito fácil, por isso a adesão em massa dos clubes em receber esses patrocinadores".</p>
+    <p>Mas de onde saía tanto dinheiro? A resposta está na matemática das próprias apostas. "As perdas dos apostadores que erraram suas previsões financiam os pagamentos aos vencedores e ainda proporcionam lucro às casas de apostas", explica o matemático Gilcione Nonato Costa, professor da UFMG e um dos fundadores do grupo Probabilidades no Futebol, que calcula as chances dos times no Campeonato Brasileiro desde 2004. Na conta das casas entram lucros, impostos, prêmios, publicidade e também os patrocínios pagos aos clubes. Segundo ele, a soma de tudo isso "representa o montante que os apostadores que perderam suas apostas precisam desembolsar para sustentar todo esse sistema". Ou seja, parte do dinheiro que bancou os salários recordes saiu do bolso de quem perdeu apostando.</p>
+    <p>O lucro da casa está nas cotações, as chamadas odds, que definem quanto o apostador recebe se acertar. Gilcione dá um exemplo. Imagine um resultado que acontece uma vez a cada cinco jogos. Numa aposta justa, quem aposta R$10 nele e acerta deveria receber R$50. A casa paga menos, R$30 ou R$40. Se a pessoa fizer essa aposta cinco vezes, vai gastar R$50, acertar uma vez e receber R$30. A diferença fica com a casa. "A longo prazo, as casas de apostas tendem a obter lucros, e as odds são estabelecidas de modo a garantir uma margem de rentabilidade para essas empresas", diz.</p>
+    <p>A publicidade mantém o jogo girando. "Os ganhos de poucos apostadores alimentam o sonho daqueles que perderam de também serem contemplados, incentivando-os a continuar apostando", explica o professor. Para isso, as marcas precisavam estar em toda parte, e a camisa dos clubes era uma das vitrines mais valiosas.</p>
+    <p>A injeção de capital não parou nos vestiários. Ela alcançou a própria estrutura das competições. O Campeonato Brasileiro passou a se chamar Brasileirão Betano, e a Copa do Brasil virou Copa Betano do Brasil, nomes que a CBF tirou de seus perfis oficiais após a proibição. Foi no torneio de mata-mata que a distorção ficou mais visível. Em 2016, o Grêmio levou R$10,74 milhões pela campanha do título, segundo o Lance!. Em 2025, o Corinthians embolsou R$97,79 milhões. Mesmo corrigido pela inflação, o prêmio de 2016 equivaleria a cerca de R$16,6 milhões: o campeão de hoje recebe quase seis vezes mais em termos reais. Em 2026, só a vitória na final vale R$78 milhões, segundo a CBF.</p>
+    <p>Criou-se, desta forma, um circuito financeiro retroalimentado. As casas de apostas colocavam centenas de milhões de reais no caixa dos clubes para bancar contratações e salários e, ao mesmo tempo, davam nome aos torneios que distribuíam as maiores premiações do calendário. O Flamengo recebia da Betano para montar o elenco e disputava a Copa Betano do Brasil por um prêmio que podia passar de R$90 milhões.</p>
+    <p>Com mais dinheiro do que nunca, os clubes brasileiros passaram a contratar nos países vizinhos e a vencer quase tudo na América do Sul.</p>
+  </div>
+</section>
+
+<!-- ================= ATO 3 ================= -->
+<section class="ato" id="ato3">
+  <div class="ato-intro">
+    <span class="numero-ato">Ato 3</span>
+    <h2>O abismo continental e o Brasil imperial</h2>
+  </div>
+  <div class="texto">
+    <p>O transbordamento financeiro gerado pelo circuito das apostas não demorou a romper as fronteiras do país. Ao longo de seis décadas de Copa Libertadores, o equilíbrio entre o futebol brasileiro e os vizinhos do continente, em especial os gigantes argentinos, foi a marca da competição. Mesmo em fases de instabilidade econômica, River Plate e Boca Juniors impunham respeito não apenas pela mística das camisas, mas pela paridade no mercado da bola.</p>
+    <p>Essa balança virou. Nos últimos anos, a Argentina passou por sucessivas desvalorizações do peso, que reduziram o poder de compra dos clubes em dólar. No Brasil, aconteceu o contrário: as receitas comerciais dos clubes cresceram, puxadas em boa parte pelo patrocínio das casas de apostas, pago em reais.</p>
+    <p>O contraste fica evidente no mercado de transferências. Em agosto de 2026, o River Plate pagou cerca de US$23 milhões ao Atlético de Madrid por Thiago Almada, a contratação mais cara da história do futebol argentino, segundo a Forbes Argentina. No Brasil, o recorde é quase o dobro: o Flamengo repatriou Lucas Paquetá por 42 milhões de euros. E esse patamar deixou de ser exclusividade de um clube: só em 2025, os clubes brasileiros gastaram US$433 milhões em contratações internacionais, mais de três vezes os US$133 milhões dos argentinos, segundo dados da FIFA compilados pela Sports Value.</p>
+  </div>
+
+  <div class="grafico">
+    <h3>As maiores contratações desde 2023: Brasil x Argentina</h3>
+    <p class="sub">Valores em milhões de euros</p>
+    <canvas id="graficoTop" height="300" aria-label="Gráfico de barras com as maiores contratações de clubes brasileiros e argentinos desde 2023" role="img"></canvas>
+    <small>Os valores variam conforme a fonte: Fussballtransfers, Lance!, ESPN e El Economista. Almada (River) e Correa foram convertidos de dólar e são aproximados.</small>
+  </div>
+
+  <div class="grafico">
+    <h3>Compras acima de 10 milhões de euros, por ano</h3>
+    <p class="sub">22 compras (cerca de € 380 mi) no Brasil contra 4 (cerca de € 58 mi) na Argentina</p>
+    <canvas id="graficoAno" height="240" aria-label="Gráfico com o número de compras acima de 10 milhões de euros por ano" role="img"></canvas>
+    <small>Não foram encontradas compras acima de 10 milhões de euros de clubes de outros países sul-americanos. A lista de 2025 pode estar incompleta.</small>
+  </div>
+
+  <div class="texto">
+    <p>No topo da pirâmide, a distância virou um abismo. Em vez de disputar atletas em igualdade de condições, os grandes clubes brasileiros passaram a esvaziar os vizinhos. Em dezembro de 2023, o Flamengo pagou a multa rescisória de cerca de US$16 milhões para tirar o meia uruguaio Nicolás de la Cruz do River Plate. Um dos maiores clubes da Argentina viu-se impotente para segurar um de seus principais jogadores diante da liquidez de um rival brasileiro.</p>
+    <p>Com a sexta maior folha salarial entre as ligas do mundo, de US$1,1 bilhão em 2025, à frente de Portugal, Holanda, Turquia e até da MLS, segundo a Sports Value, os clubes brasileiros empurraram a Libertadores para uma hegemonia sem precedentes. De 2019 a 2025, o Brasil conquistou sete títulos consecutivos, recorde na história do torneio: Flamengo três vezes, Palmeiras duas, Fluminense e Botafogo uma cada. Em cinco dessas sete finais, os dois finalistas eram brasileiros, transformando a decisão do principal torneio do continente em uma extensão do Campeonato Brasileiro. Em 2026, a sequência pode chegar a oito: o Palmeiras decide o título contra o argentino Estudiantes em 28 de novembro, em Montevidéu.</p>
+    <p>O domínio em campo acompanha o domínio no caixa. Com receitas maiores, puxadas em parte pelo patrocínio das apostas e por prêmios cada vez mais altos, os clubes brasileiros passaram a montar elencos que os rivais do continente não conseguem pagar.</p>
+    <p>O desequilíbrio também cresceu em território nacional. "Há um aumento gigantesco da distorção entre os clubes que mais recebem e os demais clubes", afirma o professor Fernando Marinho Mezzadri, da Universidade Federal do Paraná (UFPR), especialista em políticas públicas e gestão do esporte. Cotas de TV e patrocínios sempre foram desiguais, diz ele, mas "recentemente isso tem aumentado ainda mais, e as bets também contribuíram para esse aumento". O risco, segundo o professor, é o Brasil se parecer com países europeus em que "dois ou três clubes principais" dominam, enquanto os demais "ficam em uma segunda escala".</p>
+    <p>O problema é que boa parte desse dinheiro vinha de um único setor. E ninguém parecia ter um plano para o dia em que ele deixasse de pagar.</p>
+  </div>
+</section>
+
+<!-- ================= ATO 4 ================= -->
+<section class="ato" id="ato4">
+  <div class="ato-intro">
+    <span class="numero-ato">Ato 4</span>
+    <h2>A conta chegou</h2>
+  </div>
+  <div class="texto">
+    <p>O cenário começou a mudar quando o governo decidiu regulamentar o setor, cinco anos depois da lei de 2018. Sancionada em dezembro de 2023, a Lei 14.790 criou as regras: cada empresa passou a pagar R$30 milhões pela autorização para funcionar, a ter sede no Brasil, a monitorar casos de lavagem de dinheiro e a seguir limites na publicidade. Em janeiro de 2025, o mercado regulado entrou em vigor.</p>
+    <p>O primeiro ano mostrou o tamanho do setor. Segundo o Ministério da Fazenda, 79 empresas foram autorizadas a operar, mais de 25 mil sites ilegais foram bloqueados e 25,2 milhões de brasileiros apostaram em 2025. As casas de apostas faturaram cerca de R$37 bilhões, já descontados os prêmios pagos. Parte desse dinheiro chegava aos clubes: só na Série A, estima-se que as bets paguem mais de R$1 bilhão por ano em patrocínios.</p>
+    <p>O manifesto descrito no início desta reportagem não impediu o desfecho. A Medida Provisória 1.394, publicada em 25 de setembro, proibiu a exploração, a oferta e a publicidade de apostas de quota fixa em todo o país, inclusive o patrocínio. Os sites saíram do ar em 6 de outubro, e os clubes tiveram dez dias para retirar as marcas das camisas. O governo justificou a medida pelos riscos de endividamento das famílias e pelos danos à saúde mental, e reconheceu que perderá cerca de R$5 bilhões por ano em arrecadação a partir de 2027.</p>
+    <p>O presidente Luiz Inácio Lula da Silva respondeu ao alarme dos clubes sem rodeios. "Os clubes que se virem", disse, segundo a agência Reuters. Para ele, a saída passa pela gestão: "agora é preciso colocar gente de competência para [administrar] a empresa".</p>
+    <p>O Flamengo apagou a Betano do uniforme. O contrato, o mais valioso do país, foi suspenso pela Betano até 31 de março de 2027, ou até antes, se a MP cair. "Isso por si só faz com que o Flamengo não consiga honrar os compromissos que assumiu para o ano que vem", afirmou à Reuters o presidente do clube, Luiz Eduardo Baptista. Na audiência pública convocada pelo ministro Luiz Fux, do STF, o vice-presidente geral e jurídico do Flamengo, Flávio Willeman, resumiu a queixa dos clubes: "O Flamengo acreditou que o Brasil, após amplo debate no Congresso Nacional, regulou as apostas neste país".</p>
+    <p>É aqui que o problema deixa de ser a lei e passa a ser a armadilha contábil montada nos últimos anos. Os clubes assinaram contratos longos com folhas salariais de porte inédito: o Flamengo gasta R$37,5 milhões por mês com salários, e Palmeiras, Corinthians e Cruzeiro, cerca de R$30 milhões cada, segundo o ge. Esses contratos continuam valendo. O dinheiro que ajudou a pagá-los, não necessariamente. Na mesma audiência, o advogado Matheus Reis e Montenegro, que representou o Fluminense, lembrou que "a Lei Geral do Esporte obriga que paguem contrato [de jogadores] até o final". E reclamou do prazo: "Não teve no mundo mercado que restringiu a publicidade de casas de apostas em menos de dez meses. E o Brasil, por meio dessa MP, deu dez dias".</p>
+    <p>O dinheiro das apostas também não arrumou as contas. Segundo Mezzadri, da UFPR, a dívida dos clubes passou de R$ 9,6 bilhões para R$ 14,8 bilhões entre 2022 e 2025. "Não é possível que em três anos, nesses principais clubes do país, tenha havido um aumento de suas dívidas de mais de 5 bilhões de reais, mesmo recebendo os recursos das bets", diz. Para ele, o problema é anterior às apostas: "Nós não temos um profissionalismo na gestão dos clubes, e aí eles vão contraindo dívidas como se não fossem responsáveis pelo próprio pagamento dessas dívidas". Na avaliação dele, as bets não acentuaram o problema da dívida, "mas também não resolveram".</p>
+    <p>O economista Cesar Grafietti, consultor de gestão e finanças do esporte, prevê um ajuste doloroso. "Começa a ter uma reação em cadeia: você é obrigado a vender jogadores e os valores começam a cair", disse à Reuters. Segundo ele, "jogadores com contratos a serem renovados podem permanecer com salários menores".</p>
+    <p>Prates explica o risco com um exemplo: "Imagine um clube que contrate jogadores com salários elevados porque conseguiu um patrocínio excepcional. Se esse contrato não for renovado, o clube continuará obrigado a pagar os salários, mas terá perdido parte da receita que financiava esses compromissos". As consequências, diz, "podem envolver atrasos salariais, endividamento, venda antecipada de jogadores e redução da capacidade de investimento". Ele não espera, porém, uma queda imediata dos salários atuais, porque os contratos assinados precisam ser cumpridos: "O ajuste deverá ocorrer principalmente nas novas contratações e nas renovações contratuais". Também não há garantia, segundo o economista, de que patrocinadores de outros setores "estejam dispostos a pagar valores equivalentes".</p>
+    <p>A proibição das bets reabriu o debate sobre quem protege o jogo. Os clubes defendem que o mercado regulado ajudava a vigiar as apostas suspeitas. "Foi justamente a regulamentação do mercado que retirou o Brasil da liderança do ranking mundial de casos de manipulação", afirma o manifesto de setembro. Na audiência pública sobre o tema no Supremo Tribunal Federal (STF), em 3 de novembro, o presidente da Federação Nacional dos Atletas Profissionais de Futebol (Fenapaf), Jorge Borçato, foi na mesma linha: "Quando [a bet] vira clandestina, não conseguimos proteger nossos atletas", disse, segundo o SBT News. "Se virar uma coisa fora da legalidade, nossos atletas sofrerão muito mais." O governo vê o problema por outro ângulo. "Desafortunadamente, constatamos uma proximidade indesejável da atividade de bets com o crime organizado", afirmou na mesma audiência o ministro da Justiça, Wellington César Lima e Silva, segundo a Agência Brasil.</p>
+    <p>Procuradas pela equipe de reportagem, as casas de apostas Esportes da Sorte, Betano e Superbet não se manifestaram até o fechamento desta matéria.</p>
+    <p>Há quem veja exagero no alarme. Para o economista Pedro Faria, pesquisador do Cedeplar, da Universidade Federal de Minas Gerais, o argumento de que as bets sustentam o futebol não se confirma. "O setor de bets praticamente não gera emprego", disse ao Brasil de Fato. "Não vimos os benefícios que os clubes alegaram."</p>
+    <p>Na saúde, os especialistas apoiam a restrição, mas com ressalvas. "Quem estiver engajado no tratamento vai encontrar nisso uma barreira que não é perfeita, mas que ajuda na adesão à abstinência", afirmou o psiquiatra Hermano Tavares, coordenador do Ambulatório do Jogo Patológico do Hospital das Clínicas da USP, em declarações publicadas pelo Diário do Centro do Mundo. O psicanalista Felipe Valerius, que atende pessoas com vício em apostas, lembra que a proibição sozinha não resolve: "Algumas pessoas podem procurar alternativas ilegais para continuar apostando, justamente porque o comportamento compulsivo não desaparece apenas com a retirada do acesso a uma plataforma". Para ele, "não basta impedir o acesso às apostas: é necessário olhar para o sofrimento que sustenta esse comportamento e oferecer possibilidades de tratamento".</p>
+    <p>O futebol tem um peso próprio nesses casos. Segundo Valerius, a familiaridade com o esporte "pode produzir uma falsa sensação de controle": quem conhece os times, os jogadores e as estatísticas acredita que terá mais condições de prever os resultados. A matemática desmente essa confiança. "O gol é um evento relativamente raro durante uma partida", explica Gilcione, e por isso um time mais fraco pode vencer por acaso, numa falha individual ou num erro de arbitragem. Nas apostas combinadas, o risco se multiplica: com quatro jogos, há 81 combinações possíveis de resultado, e basta um erro para perder o bilhete inteiro. Enquanto isso, a marca das casas em camisas, transmissões e propagandas, diz Valerius, "pode funcionar como um estímulo recorrente para quem está tentando interromper esse comportamento".</p>
+    <p>O desfecho ainda está aberto. Em 11 de novembro, o Congresso prorrogou por mais 60 dias a validade da MP, que ainda precisa ser votada e recebeu quase cem emendas. Algumas propõem liberar de novo as apostas esportivas, mantendo a proibição dos cassinos online; outras permitem que os clubes mantenham as marcas nos uniformes por até dois anos. A medida também é contestada no STF. Ao encerrar a audiência de novembro, o relator, Luiz Fux, disse ter a "percepção de que as bets devem ser banidas", mas afirmou que a MP traz pontos que o tribunal ainda terá de analisar, segundo a Folha de Pernambuco.</p>
+    <p>Mezzadri teme que a conta acabe, mais uma vez, nas mãos do Estado. Em 2015, o governo criou o Profut, programa que refinanciou as dívidas dos clubes em troca de contrapartidas de gestão. "Não adianta a gente fazer um Profut 2, um Profut 3 (...) e os clubes continuarem tendo essa gestão amadora, sem ter uma fiscalização, sem ter efetivamente um controle", afirma. Para ele, esse controle cabe não só ao governo, mas também aos associados dos clubes e à CBF.</p>
+    <p>Há ainda o risco de o país perder seus melhores jogadores. Prates lembra que o Brasil é o país que mais exporta jogadores, e os mais valorizados podem encontrar oportunidades em outros países. Se houver essa evasão, diz, haverá um "empobrecimento" do futebol brasileiro, "no sentido de que permanecerão apenas os menos valorizados".</p>
+    <p>Seja qual for o resultado, o futebol brasileiro já passou por outras crises. Sobreviveu a mais de um século de instabilidade política, à hiperinflação e a várias trocas de moeda muito antes de a primeira casa de apostas estampar uma camisa. A pergunta agora é outra: como os clubes vão pagar, sem o dinheiro das apostas, os salários que assumiram enquanto ele existia.</p>
+  </div>
+
+  <div class="texto fontes">
+    <strong>Fontes do levantamento de contratações:</strong>
+    <a href="https://www.fussballtransfers.com/brasilien/serie-a/2024/transferuebersicht" target="_blank" rel="noopener">Fussballtransfers (Série A 2024)</a> &middot;
+    <a href="https://www.fussballtransfers.com/brasilien/serie-a/transferuebersicht/" target="_blank" rel="noopener">Fussballtransfers (Série A 2026)</a> &middot;
+    <a href="https://www.fussballtransfers.com/argentinien/primera-division/2025/transferuebersicht" target="_blank" rel="noopener">Fussballtransfers (Primera División 2025)</a> &middot;
+    <a href="https://www.lance.com.br/lance-negocios/cofres-abertos-as-10-maiores-contratacoes-do-futebol-brasileiro-em-2025.html" target="_blank" rel="noopener">Lance! (maiores contratações de 2025)</a> &middot;
+    <a href="https://www.espn.com/soccer/story/_/id/47777332/top-10-most-expensive-transfers-americas-lucas-paqueta-breaks-record" target="_blank" rel="noopener">ESPN (transferências mais caras das Américas)</a> &middot;
+    <a href="https://eleconomista.com.ar/deportes/compras-mas-caras-historia-futbol-argentino-n96941" target="_blank" rel="noopener">El Economista (compras mais caras do futebol argentino)</a>
+  </div>
+</section>
+
+</main>
+
+<footer>O fim da bolha &middot; Reportagem &middot; novembro de 2026</footer>
+
+<script>
+/* ---------- bolhas de sabão na abertura ---------- */
+(function(){
+  const topo=document.getElementById('topo');
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  function nasce(){
+    const b=document.createElement('div');
+    const t=44+Math.random()*96;
+    b.className='bolha';
+    b.style.width=b.style.height=t+'px';
+    b.style.left=(4+Math.random()*88)+'%';
+    b.style.animationDuration=(11+Math.random()*10)+'s,'+(2.4+Math.random()*3)+'s';
+    b.addEventListener('pointerdown',()=>estoura(b));
+    b.addEventListener('animationend',e=>{ if(e.animationName==='sobe') b.remove(); });
+    topo.appendChild(b);
+  }
+  function estoura(b){
+    const rt=topo.getBoundingClientRect(), r=b.getBoundingClientRect();
+    const x=r.left-rt.left, y=r.top-rt.top, cx=x+r.width/2, cy=y+r.height/2;
+    const a=document.createElement('div');
+    a.className='anel';
+    a.style.cssText='left:'+x+'px;top:'+y+'px;width:'+r.width+'px;height:'+r.height+'px';
+    topo.appendChild(a); setTimeout(()=>a.remove(),520);
+    for(let i=0;i<11;i++){
+      const g=document.createElement('div');
+      g.className='gota';
+      g.style.left=cx+'px'; g.style.top=cy+'px';
+      topo.appendChild(g);
+      const ang=Math.random()*6.283, d=r.width/2+Math.random()*55;
+      requestAnimationFrame(()=>{
+        g.style.transform='translate('+Math.cos(ang)*d+'px,'+Math.sin(ang)*d+'px)';
+        g.style.opacity=0;
+      });
+      setTimeout(()=>g.remove(),650);
+    }
+    b.remove();
+  }
+  for(let i=0;i<5;i++) setTimeout(nasce,i*900);
+  setInterval(()=>{ if(topo.querySelectorAll('.bolha').length<7) nasce(); },2200);
+})();
+
+/* ---------- gráficos ---------- */
+Chart.defaults.font.family="'Work Sans', sans-serif";
+Chart.defaults.color='#4a4d43';
+const BR='#4f6648', AR='#b4623b', GRADE='rgba(36,39,32,.08)';
+
+const tops=[
+  ['Lucas Paquetá (Flamengo)',42,BR],
+  ['Gerson (Cruzeiro)',27,BR],
+  ['Vitor Roque (Palmeiras)',25.5,BR],
+  ['Jhon Arias (Palmeiras)',25,BR],
+  ['Danilo (Botafogo)',22,BR],
+  ['Samuel Lino (Flamengo)',22,BR],
+  ['Thiago Almada (River Plate)',20,AR],
+  ['Correa (River Plate)',13.5,AR],
+  ['Cristian Medina (Estudiantes)',13,AR],
+  ['Kevin Castaño (River Plate)',12.6,AR]
+];
+
+function aoAparecer(id,fn){
+  const el=document.getElementById(id);
+  new IntersectionObserver((es,o)=>{
+    if(es[0].isIntersecting){ fn(el); o.disconnect(); }
+  },{threshold:.35}).observe(el);
+}
+
+aoAparecer('graficoTop',el=>new Chart(el,{
+  type:'bar',
+  data:{
+    labels:tops.map(t=>t[0]),
+    datasets:[{data:tops.map(t=>t[1]),backgroundColor:tops.map(t=>t[2]),borderRadius:3}]
+  },
+  options:{
+    indexAxis:'y',
+    plugins:{
+      legend:{display:false},
+      tooltip:{callbacks:{label:c=>' € '+c.parsed.x+' mi'}}
+    },
+    animation:{duration:1400,easing:'easeOutCubic'},
+    scales:{x:{grid:{color:GRADE}},y:{grid:{display:false}}}
+  }
+}));
+
+aoAparecer('graficoAno',el=>new Chart(el,{
+  type:'bar',
+  data:{
+    labels:['2023','2024','2025','2026'],
+    datasets:[
+      {label:'Brasil',data:[1,6,10,5],backgroundColor:BR,borderRadius:3},
+      {label:'Argentina',data:[0,0,2,2],backgroundColor:AR,borderRadius:3}
+    ]
+  },
+  options:{
+    animation:{duration:1300,easing:'easeOutCubic'},
+    scales:{y:{grid:{color:GRADE},ticks:{precision:0}},x:{grid:{display:false}}}
+  }
+}));
+</script>
+</body>
+</html>
