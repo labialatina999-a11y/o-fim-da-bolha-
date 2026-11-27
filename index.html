@@ -6,120 +6,85 @@
 <title>O fim da bolha</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <style>
-  :root{
-    --papel:#f4ecdc; --tinta:#2a2a24; --musgo:#3f5a3a; --terracota:#b4573a; --linha:#d9cfb8;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{
-    background:var(--papel);
-    color:var(--tinta);
-    font-family:Georgia,"Times New Roman",serif;
-    line-height:1.75;
-    overflow-x:hidden;
-  }
+:root{
+  --papel:#fff5dc; --tinta:#1d2a24; --verde:#0b7a4b; --verde-esc:#064e32;
+  --coral:#ff5a36; --sol:#ffc933; --azul:#1d4ed8; --linha:#f0d9a0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--papel);color:var(--tinta);font-family:Georgia,"Times New Roman",serif;line-height:1.75;overflow-x:hidden}
 
-  /* ---------- BOLHAS ---------- */
-  #bolhas{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden}
-  .bolha{
-    position:absolute;bottom:-220px;
-    pointer-events:auto;cursor:pointer;
-    animation:subir linear forwards;
-    will-change:transform;
-  }
-  .bolha .corpo{
-    width:100%;height:100%;border-radius:50%;
-    background-repeat:no-repeat;
-    opacity:.92;
-    transition:transform .2s ease-out, opacity .3s ease-out;
-  }
-  /* recortes da imagem bolhas.png (3 etapas na mesma imagem) */
-  .bolha .corpo.img.f1{background-image:url("imagens/bolhas.png");background-size:426.7% auto;background-position:4.9% 50.2%}
-  .bolha .corpo.img.f2{background-image:url("imagens/bolhas.png");background-size:352% auto;background-position:47.6% 51.6%;transform:scale(1.25)}
-  .bolha .corpo.img.f3{background-image:url("imagens/bolhas.png");background-size:335% auto;background-position:98.2% 46%;transform:scale(1.5);opacity:.75}
-  .bolha .corpo.sumir{opacity:0 !important;transform:scale(1.8) !important}
+/* BOLHAS */
+#bolhas{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden}
+.bolha{position:absolute;bottom:-260px;pointer-events:auto;cursor:pointer;animation:subir linear forwards;will-change:transform}
+.bolha .corpo{
+  width:100%;height:100%;border-radius:50%;
+  background-repeat:no-repeat;background-size:300% 100%;
+  mix-blend-mode:multiply;
+  transition:transform .2s ease-out,opacity .3s ease-out;
+}
+.bolha .corpo.img.f1{background-image:var(--img);background-position:0% 50%}
+.bolha .corpo.img.f2{background-image:var(--img);background-position:50% 50%;transform:scale(1.2)}
+.bolha .corpo.img.f3{background-image:var(--img);background-position:100% 50%;transform:scale(1.4);opacity:.8}
+.bolha .corpo.sumir{opacity:0 !important;transform:scale(1.7) !important}
+.bolha .corpo.css{
+  mix-blend-mode:normal;
+  background:
+    radial-gradient(circle at 30% 28%,rgba(255,255,255,.95) 0 6%,transparent 14%),
+    conic-gradient(from 20deg,rgba(255,90,54,.3),rgba(255,201,51,.3),rgba(60,200,140,.3),rgba(60,140,255,.35),rgba(200,90,255,.35),rgba(255,90,54,.3));
+  border:1.5px solid rgba(255,255,255,.85);
+  box-shadow:inset 0 0 16px rgba(255,255,255,.6);
+}
+@keyframes subir{
+  0%{transform:translate(0,0)}
+  25%{transform:translate(var(--dx),-28vh)}
+  50%{transform:translate(calc(var(--dx) * -0.6),-60vh)}
+  75%{transform:translate(var(--dx),-92vh)}
+  100%{transform:translate(0,-140vh)}
+}
+.gota{position:absolute;width:8px;height:8px;border-radius:50%;animation:gota .6s ease-out forwards}
+@keyframes gota{to{transform:translate(var(--gx),var(--gy)) scale(.3);opacity:0}}
 
-  /* reserva em CSS */
-  .bolha .corpo.css{
-    background:
-      radial-gradient(circle at 30% 28%, rgba(255,255,255,.95) 0 6%, transparent 14%),
-      radial-gradient(circle at 50% 50%, rgba(255,255,255,.05) 55%, rgba(120,190,220,.3) 75%, rgba(220,120,200,.4) 100%);
-    border:1px solid rgba(255,255,255,.7);
-    box-shadow:inset 0 0 18px rgba(255,255,255,.5), 0 0 6px rgba(0,0,0,.08);
-  }
-  @keyframes subir{
-    0%{transform:translate(0,0)}
-    25%{transform:translate(var(--dx),-28vh)}
-    50%{transform:translate(calc(var(--dx) * -0.6),-60vh)}
-    75%{transform:translate(var(--dx),-92vh)}
-    100%{transform:translate(0,-140vh)}
-  }
-  .gota{
-    position:absolute;width:6px;height:6px;border-radius:50%;
-    background:rgba(255,255,255,.9);
-    box-shadow:0 0 4px rgba(90,160,200,.9);
-    animation:gota .55s ease-out forwards;
-  }
-  @keyframes gota{to{transform:translate(var(--gx),var(--gy));opacity:0}}
+/* CAPA */
+header.capa{
+  min-height:94vh;padding:8vh 7vw 6vh;display:flex;flex-direction:column;justify-content:flex-end;
+  color:#fff5dc;position:relative;overflow:hidden;
+  background:
+    radial-gradient(circle at 85% 15%,rgba(255,201,51,.9) 0 9%,transparent 9.5%),
+    radial-gradient(circle at 78% 30%,rgba(255,90,54,.55) 0 14%,transparent 14.5%),
+    linear-gradient(160deg,#0fa263 0%,#0b7a4b 45%,#064e32 100%);
+}
+header.capa::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:10px;
+  background:repeating-linear-gradient(90deg,var(--sol) 0 40px,var(--coral) 40px 80px,var(--azul) 80px 120px);
+}
+.capa .selo{font-family:Arial,sans-serif;letter-spacing:.25em;text-transform:uppercase;font-size:.78rem;color:var(--sol);margin-bottom:1.5rem;font-weight:700}
+.capa h1{font-size:clamp(3.4rem,12vw,10rem);line-height:.92;font-weight:700;max-width:11ch;margin-left:-.05em;text-shadow:0 4px 0 rgba(0,0,0,.18)}
+.capa h1 em{color:var(--sol);font-style:italic}
+.capa p.sub{margin-top:2rem;max-width:34rem;font-size:1.25rem;margin-left:12vw}
+.capa p.dica{margin-top:2.5rem;font-family:Arial,sans-serif;font-size:.85rem;color:var(--sol)}
 
-  /* ---------- CAPA ---------- */
-  header.capa{
-    min-height:92vh;padding:8vh 7vw 6vh;
-    display:flex;flex-direction:column;justify-content:flex-end;
-    background:linear-gradient(180deg,#46633f,#2b412a);
-    color:#f4ecdc;
-  }
-  .capa .selo{
-    font-family:Arial,sans-serif;letter-spacing:.25em;text-transform:uppercase;
-    font-size:.75rem;color:#e6b79f;margin-bottom:1.5rem;
-  }
-  .capa h1{
-    font-size:clamp(3.2rem,11vw,9rem);line-height:.95;font-weight:700;
-    max-width:11ch;margin-left:-.05em;
-  }
-  .capa h1 em{color:#d9825f;font-style:italic}
-  .capa p.sub{margin-top:2rem;max-width:34rem;font-size:1.2rem;opacity:.9;margin-left:12vw}
-  .capa p.dica{margin-top:2.5rem;font-family:Arial,sans-serif;font-size:.8rem;opacity:.65}
+/* TEXTO */
+main{max-width:43rem;margin:0 auto;padding:5rem 1.5rem 7rem;position:relative;z-index:1}
+main h2{font-size:clamp(1.7rem,5vw,2.6rem);line-height:1.12;color:var(--verde-esc);margin:5rem 0 1.6rem -2rem;border-left:8px solid var(--coral);padding-left:1rem}
+main h2 small{display:block;font-family:Arial,sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--coral);margin-bottom:.4rem}
+main h2.primeiro{margin-top:0}
+main p{margin-bottom:1.4rem;font-size:1.15rem}
+main h2.primeiro + p::first-letter{float:left;font-size:4.6rem;line-height:.9;padding:.08em .12em 0 0;color:var(--coral);font-weight:700}
 
-  /* ---------- TEXTO ---------- */
-  main{max-width:43rem;margin:0 auto;padding:5rem 1.5rem 7rem;position:relative;z-index:1}
-  main h2{
-    font-size:clamp(1.7rem,5vw,2.6rem);line-height:1.12;color:var(--musgo);
-    margin:5rem 0 1.6rem -2rem;border-left:6px solid var(--terracota);padding-left:1rem;
-  }
-  main h2 small{
-    display:block;font-family:Arial,sans-serif;font-size:.72rem;
-    letter-spacing:.22em;text-transform:uppercase;color:var(--terracota);margin-bottom:.4rem;
-  }
-  main h2.primeiro{margin-top:0}
-  main p{margin-bottom:1.4rem;font-size:1.15rem}
-  main h2.primeiro + p::first-letter{
-    float:left;font-size:4.4rem;line-height:.9;padding:.08em .12em 0 0;
-    color:var(--terracota);font-weight:700;
-  }
-
-  /* ---------- GRÁFICO ---------- */
-  figure.grafico{
-    margin:3rem -3rem;padding:1.8rem 1.8rem 1.2rem;
-    background:#efe4cc;border-top:3px solid var(--musgo);
-  }
-  figure.grafico h4{font-size:1.15rem;color:var(--musgo);margin-bottom:.3rem}
-  figure.grafico .leg{font-family:Arial,sans-serif;font-size:.8rem;color:#6d6a5c;margin-bottom:1.2rem}
-  .graficos{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-  .graficos div{position:relative;height:260px}
-  figure.grafico figcaption{
-    font-family:Arial,sans-serif;font-size:.75rem;color:#6d6a5c;margin-top:1rem;line-height:1.5
-  }
-  @media(max-width:700px){
-    .graficos{grid-template-columns:1fr}
-    figure.grafico{margin:2.5rem -1rem}
-    main h2{margin-left:-.5rem}
-  }
-
-  footer{
-    text-align:center;padding:3rem 1rem;font-family:Arial,sans-serif;
-    font-size:.8rem;color:#6d6a5c;border-top:1px solid var(--linha);
-  }
+/* GRÁFICO */
+figure.grafico{margin:3rem -3rem;padding:1.8rem 1.8rem 1.2rem;background:#ffe9a8;border-top:5px solid var(--verde);border-radius:4px}
+figure.grafico h4{font-size:1.15rem;color:var(--verde-esc);margin-bottom:.3rem}
+figure.grafico .leg{font-family:Arial,sans-serif;font-size:.8rem;color:#5b5230;margin-bottom:1.2rem}
+.graficos{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.graficos div{position:relative;height:260px}
+figure.grafico figcaption{font-family:Arial,sans-serif;font-size:.75rem;color:#5b5230;margin-top:1rem;line-height:1.5}
+@media(max-width:700px){
+  .graficos{grid-template-columns:1fr}
+  figure.grafico{margin:2.5rem -1rem}
+  main h2{margin-left:-.5rem}
+}
+footer{text-align:center;padding:3rem 1rem;font-family:Arial,sans-serif;font-size:.8rem;color:#fff5dc;background:var(--verde-esc)}
 </style>
 </head>
 <body>
@@ -206,9 +171,7 @@
     <div><canvas id="graf-qtd"></canvas></div>
     <div><canvas id="graf-valor"></canvas></div>
   </div>
-  <figcaption>
-    Fontes: Fussballtransfers, Lance!, Terra/Placar, ESPN, 365Scores, El Economista e Forbes Argentina. Os valores variam conforme a fonte consultada, e as listas de 2025 e da temporada argentina de 2026 podem estar incompletas. Totais aproximados: Brasil, 22 compras (cerca de € 380 milhões); Argentina, 4 compras (cerca de € 58 milhões).
-  </figcaption>
+  <figcaption>Fontes: Fussballtransfers, Lance!, Terra/Placar, ESPN, 365Scores, El Economista e Forbes Argentina. Os valores variam conforme a fonte consultada, e as listas de 2025 e da temporada argentina de 2026 podem estar incompletas. Totais aproximados: Brasil, 22 compras (cerca de € 380 milhões); Argentina, 4 compras (cerca de € 58 milhões).</figcaption>
 </figure>
 
 <p>No topo da pirâmide, a distância virou um abismo. Em vez de disputar atletas em igualdade de condições, os grandes clubes brasileiros passaram a esvaziar os vizinhos. Em dezembro de 2023, o Flamengo pagou a multa rescisória de cerca de US$16 milhões para tirar o meia uruguaio Nicolás de la Cruz do River Plate. Um dos maiores clubes da Argentina viu-se impotente para segurar um de seus principais jogadores diante da liquidez de um rival brasileiro.</p>
@@ -264,31 +227,24 @@
 <footer>O fim da bolha · Reportagem</footer>
 
 <script>
-/* ================= GRÁFICOS ================= */
+/* GRÁFICOS */
 (function(){
   if(typeof Chart === 'undefined') return;
-  const musgo = '#3f5a3a', terra = '#b4573a', tinta = '#2a2a24';
-  Chart.defaults.font.family = 'Arial, sans-serif';
-  Chart.defaults.color = tinta;
-
-  function barra(id, titulo, dados, sufixo){
-    new Chart(document.getElementById(id), {
+  var verde='#0b7a4b', coral='#ff5a36', tinta='#1d2a24';
+  Chart.defaults.font.family='Arial, sans-serif';
+  Chart.defaults.color=tinta;
+  function barra(id,titulo,dados,sufixo){
+    new Chart(document.getElementById(id),{
       type:'bar',
-      data:{
-        labels:['Brasil','Argentina'],
-        datasets:[{ data:dados, backgroundColor:[terra, musgo], borderRadius:3 }]
-      },
+      data:{labels:['Brasil','Argentina'],datasets:[{data:dados,backgroundColor:[coral,verde],borderRadius:4}]},
       options:{
         maintainAspectRatio:false,
         plugins:{
           legend:{display:false},
-          title:{display:true, text:titulo, font:{size:13}},
-          tooltip:{callbacks:{label:c=>' '+c.parsed.y+sufixo}}
+          title:{display:true,text:titulo,font:{size:13}},
+          tooltip:{callbacks:{label:function(c){return ' '+c.parsed.y+sufixo;}}}
         },
-        scales:{
-          y:{beginAtZero:true, grid:{color:'rgba(0,0,0,.08)'}},
-          x:{grid:{display:false}}
-        }
+        scales:{y:{beginAtZero:true,grid:{color:'rgba(0,0,0,.08)'}},x:{grid:{display:false}}}
       }
     });
   }
@@ -296,71 +252,78 @@
   barra('graf-valor','Valor total aproximado (€ milhões)',[380,58],' milhões de euros');
 })();
 
-/* ================= BOLHAS ================= */
+/* BOLHAS COM AS IMAGENS CRIADAS */
 (function(){
-  const camada = document.getElementById('bolhas');
-  const teste = new Image();
-  let temImagem = false;
-  teste.onload = ()=>{ temImagem = true; iniciar(); };
-  teste.onerror = ()=>{ temImagem = false; iniciar(); };
-  teste.src = 'imagens/bolhas.png';
+  var camada=document.getElementById('bolhas');
+  var cores=['#ff5a36','#ffc933','#3ddc97','#4aa3ff','#c77dff','#ffffff'];
+  var candidatos=['bolhas.png','imagensbolhas.png','imagens/bolhas.png','imagensbolhas.png.png'];
+  var temImagem=false;
+
+  function tentar(i){
+    if(i>=candidatos.length){ iniciar(); return; }
+    var im=new Image();
+    im.onload=function(){
+      temImagem=true;
+      document.documentElement.style.setProperty('--img','url("'+candidatos[i]+'")');
+      iniciar();
+    };
+    im.onerror=function(){ tentar(i+1); };
+    im.src=candidatos[i];
+  }
 
   function criarBolha(){
-    const b = document.createElement('div');
-    const corpo = document.createElement('div');
-    const tamanho = 70 + Math.random()*110;
-    const duracao = 15 + Math.random()*14;
-    b.className = 'bolha';
-    b.style.width = b.style.height = tamanho + 'px';
-    b.style.left = Math.random()*92 + 'vw';
-    b.style.setProperty('--dx', (Math.random()*80-40) + 'px');
-    b.style.animationDuration = duracao + 's';
-
-    corpo.className = temImagem ? 'corpo img f1' : 'corpo css';
+    var b=document.createElement('div');
+    var corpo=document.createElement('div');
+    var tam=100+Math.random()*110;
+    b.className='bolha';
+    b.style.width=b.style.height=tam+'px';
+    b.style.left=Math.random()*90+'vw';
+    b.style.setProperty('--dx',(Math.random()*90-45)+'px');
+    b.style.animationDuration=(15+Math.random()*14)+'s';
+    corpo.className=temImagem?'corpo img f1':'corpo css';
     b.appendChild(corpo);
 
-    let estourada = false;
-    const estourar = (e)=>{
+    var estourada=false;
+    b.addEventListener('pointerdown',function(e){
       e.preventDefault();
       if(estourada) return;
-      estourada = true;
-      const r = b.getBoundingClientRect();
-      const cx = r.left + r.width/2, cy = r.top + r.height/2;
-
-      for(let k=0;k<12;k++){
-        const g = document.createElement('div');
-        g.className = 'gota';
-        g.style.left = cx + 'px';
-        g.style.top = cy + 'px';
-        const ang = Math.random()*Math.PI*2;
-        const dist = r.width*0.55 + Math.random()*45;
-        g.style.setProperty('--gx', Math.cos(ang)*dist + 'px');
-        g.style.setProperty('--gy', Math.sin(ang)*dist + 'px');
+      estourada=true;
+      var r=b.getBoundingClientRect();
+      var cx=r.left+r.width/2, cy=r.top+r.height/2;
+      for(var k=0;k<16;k++){
+        var g=document.createElement('div');
+        g.className='gota';
+        g.style.left=cx+'px'; g.style.top=cy+'px';
+        g.style.background=cores[Math.floor(Math.random()*cores.length)];
+        var ang=Math.random()*Math.PI*2;
+        var dist=r.width*0.55+Math.random()*60;
+        g.style.setProperty('--gx',Math.cos(ang)*dist+'px');
+        g.style.setProperty('--gy',Math.sin(ang)*dist+'px');
         camada.appendChild(g);
-        setTimeout(()=>g.remove(),600);
+        (function(x){ setTimeout(function(){ x.remove(); },650); })(g);
       }
-
       if(temImagem){
-        corpo.className = 'corpo img f2';
-        setTimeout(()=>{ corpo.className = 'corpo img f3'; }, 140);
-        setTimeout(()=>{ corpo.classList.add('sumir'); }, 320);
-        setTimeout(()=>b.remove(), 700);
+        corpo.className='corpo img f2';
+        setTimeout(function(){ corpo.className='corpo img f3'; },150);
+        setTimeout(function(){ corpo.classList.add('sumir'); },330);
+        setTimeout(function(){ b.remove(); },720);
       } else {
-        corpo.style.transform = 'scale(1.5)';
-        corpo.style.opacity = '0';
-        setTimeout(()=>b.remove(), 350);
+        corpo.style.transform='scale(1.5)';
+        corpo.style.opacity='0';
+        setTimeout(function(){ b.remove(); },350);
       }
-    };
-    b.addEventListener('pointerdown', estourar);
-    b.addEventListener('animationend', ()=>{ if(!estourada) b.remove(); });
+    });
+    b.addEventListener('animationend',function(){ if(!estourada) b.remove(); });
     camada.appendChild(b);
   }
 
   function iniciar(){
-    const max = window.innerWidth < 700 ? 9 : 16;
-    for(let i=0;i<5;i++) setTimeout(criarBolha, i*800);
-    setInterval(()=>{ if(camada.children.length < max) criarBolha(); }, 1600);
+    var max=window.innerWidth<700?9:15;
+    for(var i=0;i<5;i++) setTimeout(criarBolha,i*700);
+    setInterval(function(){ if(camada.children.length<max) criarBolha(); },1500);
   }
+
+  tentar(0);
 })();
 </script>
 </body>
